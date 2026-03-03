@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Miss Aliya Chat</title>
+
+<style>
+body {
+  background:#111;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+#chatBox{
+  width:90%;
+  max-width:400px;
+  height:300px;
+  margin:20px auto;
+  overflow-y:auto;
+  border:1px solid #444;
+  padding:10px;
+}
+
+.message{
+  padding:8px;
+  margin:5px 0;
+  border-radius:6px;
+}
+
+.user{background:#333;}
+.ai{background:#550000;}
+
+button{
+  padding:8px 15px;
+  margin-top:5px;
+  background:red;
+  color:white;
+  border:none;
+}
+
+input{
+  padding:8px;
+  width:65%;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Miss Aliya 💛</h2>
+
+<div id="chatBox"></div>
+
+<input type="text" id="question" placeholder="Type message">
+<button id="sendBtn">Send</button>
+<button id="clearBtn">Clear</button>
+
+<script>
+
+var sendBtn = document.getElementById("sendBtn");
+var clearBtn = document.getElementById("clearBtn");
+
+sendBtn.addEventListener("click", sendMessage);
+clearBtn.addEventListener("click", clearChat);
+
+document.getElementById("question").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    sendMessage();
+  }
+});
+
+function sendMessage(){
+
+  var input = document.getElementById("question");
+  var text = input.value.toLowerCase();
+
+  if(text === "") return;
+
+  var chatBox = document.getElementById("chatBox");
+
+  var userDiv = document.createElement("div");
+  userDiv.className = "message user";
+  userDiv.innerHTML = "You: " + text;
+  chatBox.appendChild(userDiv);
+
+  var replyDiv = document.createElement("div");
+  replyDiv.className = "message ai";
+  replyDiv.innerHTML = "Aliya: Reply working 😌";
+  chatBox.appendChild(replyDiv);
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+  input.value = "";
+}
+
+function clearChat(){
+  document.getElementById("chatBox").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Miss Aliya Chat</title>
+
+<style>
+body {
+  background:#111;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+#chatBox{
+  width:90%;
+  max-width:400px;
+  height:300px;
+  margin:20px auto;
+  overflow-y:auto;
+  border:1px solid #444;
+  padding:10px;
+}
+
+.message{
+  padding:8px;
+  margin:5px 0;
+  border-radius:6px;
+}
+
+.user{background:#333;}
+.ai{background:#550000;}
+
+button{
+  padding:8px 15px;
+  margin-top:5px;
+  background:red;
+  color:white;
+  border:none;
+}
+
+input{
+  padding:8px;
+  width:65%;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Miss Aliya 💛</h2>
+
+<div id="chatBox"></div>
+
+<input type="text" id="question" placeholder="Type message">
+<button id="sendBtn">Send</button>
+<button id="clearBtn">Clear</button>
+
+<script>
+
+var sendBtn = document.getElementById("sendBtn");
+var clearBtn = document.getElementById("clearBtn");
+
+sendBtn.addEventListener("click", sendMessage);
+clearBtn.addEventListener("click", clearChat);
+
+document.getElementById("question").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    sendMessage();
+  }
+});
+
+function sendMessage(){
+
+  var input = document.getElementById("question");
+  var text = input.value.toLowerCase();
+
+  if(text === "") return;
+
+  var chatBox = document.getElementById("chatBox");
+
+  var userDiv = document.createElement("div");
+  userDiv.className = "message user";
+  userDiv.innerHTML = "You: " + text;
+  chatBox.appendChild(userDiv);
+
+  var response = "";
+
+if(text.includes("hello")){
+  response = "Hii 😌💛";
+}
+else if(text.includes("kaisi ho") || text.includes("kaise ho")){
+  response = "Main theek hoon… tum batao 😊";
+}
+else if(text.includes("naam")){
+  response = "Mera naam Miss Aliya hai ✨";
+}
+else{
+  response = "Ye interesting tha… aur bolo 😏";
+}
+
+var replyDiv = document.createElement("div");
+replyDiv.className = "message ai";
+replyDiv.innerHTML = "Aliya: " + response;
+chatBox.appendChild(replyDiv);
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+  input.value = "";
+}
+
+function clearChat(){
+  document.getElementById("chatBox").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
