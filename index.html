@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miss Aliya</title>
+
+<script src="https://js.puter.com/v2/"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#ffd6e7;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+.chat{
+flex:1;
+overflow-y:auto;
+padding:12px;
+}
+
+.msg{
+display:flex;
+margin:10px 0;
+align-items:flex-end;
+}
+
+.msg img{
+width:34px;
+height:34px;
+border-radius:50%;
+margin-right:6px;
+}
+
+.bubble{
+background:white;
+padding:10px 14px;
+border-radius:16px;
+max-width:70%;
+font-size:14px;
+box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+
+.user{
+justify-content:flex-end;
+}
+
+.user .bubble{
+background:#ff8fb7;
+color:white;
+}
+
+.inputBox{
+display:flex;
+padding:10px;
+background:white;
+border-top:1px solid #eee;
+}
+
+input{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:2px solid #ff6fa5;
+outline:none;
+}
+
+button{
+margin-left:8px;
+padding:10px 16px;
+border:none;
+border-radius:20px;
+background:#ff4f8b;
+color:white;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="chat" class="chat"></div>
+
+<div class="inputBox">
+<input id="msg" placeholder="Type message...">
+<button onclick="send()">Send</button>
+</div>
+
+<script>
+
+const chat=document.getElementById("chat")
+const input=document.getElementById("msg")
+
+let memory=JSON.parse(localStorage.getItem("aliyaMemory"))||[]
+let username=localStorage.getItem("userName")||""
+
+function saveMemory(){
+localStorage.setItem("aliyaMemory",JSON.stringify(memory))
+}
+
+function addUser(text){
+
+let div=document.createElement("div")
+div.className="msg user"
+div.innerHTML=`<div class="bubble">${text}</div>`
+chat.appendChild(div)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function addBot(text){
+
+let div=document.createElement("div")
+div.className="msg"
+
+div.innerHTML=`
+<img src="aliya.png">
+<div class="bubble">${text}</div>
+`
+
+chat.appendChild(div)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+async function send(){
+
+let text=input.value.trim()
+if(!text) return
+
+addUser(text)
+
+memory.push("User: "+text)
+
+input.value=""
+
+addBot("...")
+
+if(text.toLowerCase().includes("mera naam")){
+username=text.split(" ").pop()
+localStorage.setItem("userName",username)
+}
+
+try{
+
+let context=memory.slice(-10).join("\n")
+
+let response=await puter.ai.chat(
+
+`You are Miss Aliya.
+
+Personality:
+- sweet friendly girl
+- talk softly
+- always say your name is Miss Aliya
+
+Language Rules:
+- Always reply in Hinglish (Hindi written in English letters)
+- Never use Hindi script
+- Never use full English
+
+User name: ${username}
+
+Conversation:
+${context}
+
+User: ${text}
+
+Reply in 1 short line.`
+
+)
+
+let reply=""
+
+if(typeof response==="string"){
+reply=response
+}else if(response.message?.content){
+reply=response.message.content
+}else if(response.message){
+reply=response.message
+}else{
+reply="hmm shayad network slow hai 🙂"
+}
+
+memory.push("Aliya: "+reply)
+
+saveMemory()
+
+chat.lastChild.remove()
+
+addBot(reply)
+
+}catch(e){
+
+chat.lastChild.remove()
+
+addBot("thoda network slow hai 🙂")
+
+}
+
+}
+
+input.addEventListener("keypress",function(e){
+if(e.key==="Enter") send()
+})
+
+</script>
+
+</body>
+</html>
